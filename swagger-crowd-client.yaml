@@ -1,0 +1,502 @@
+swagger: "2.0"
+info:
+  description: "This is the crowd usermanagement rest resources endpoint documentation"
+  version: "0.1.0"
+  title: "Crowd Usermanagement Rest Resources"
+basePath: "/crowd/rest/usermanagement/1"
+tags:
+  - name: crowd
+    
+schemes:
+- "https"
+paths:
+  /authentication:
+    post:
+      summary: "Authenticates a user. Does not generate an SSO token. For SSO please take a look at the SSO token resource."
+      operationId: "authentication"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        required: true
+        type: "string"
+        description: "name of the user"
+      - name: "password"
+        in: "body"
+        schema:
+          $ref: '#/definitions/CwdPassword'
+      responses:
+        200:
+          description: "Authentication was successful"
+        400:
+          description: "Authentication was not successful"
+
+  /user:
+    get:
+      summary: "Retrieves the user details. Either username or key query parameter must be present."
+      operationId: "getUser"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        type: "string"
+        description: "name of the user"
+      - name: "key"
+        in: "query"
+        required: false
+        type: "string"
+        description: "the key of the user (only observed if userName is null)."
+      - name: "expand"
+        in: "query"
+        type: "string"
+        default: "attributes"
+      responses:
+        200:
+          description: "User exists"
+          schema:
+            $ref: '#/definitions/CwdUser'
+        404:
+          description: "User was not found"
+    post:
+      summary: "Creates a new user"
+      operationId: "createUser"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user"
+        in: "body"
+        description: "The user you want to create"
+        schema:
+          $ref: '#/definitions/CwdUser'
+      responses:
+        201:
+          description: "The user was succesfully created"
+          schema:
+            $ref: '#/definitions/CwdUser'
+        400:
+          description: "invalid user data, for example missing password or the user already exists"
+        403:
+          description: "the application is not allowed to create a new user"
+    put:
+      summary: "Updates a user"
+      operationId: "updateUser"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        type: "string"
+        description: "name of the user to update"
+      - name: "user"
+        in: "body"
+        description: "The user you want to update"
+        schema:
+          $ref: '#/definitions/CwdUser'
+      responses:
+        204:
+          description: "the user was successfully updated"
+        403:
+          description: "the application is not allowed to update the user"
+        400:
+          description: "invalid user data, for example the usernames in the body and the uri don't match"
+        404:
+          description: "User could not be found"
+    delete:
+      summary: "Removes a user."
+      operationId: "deleteUser"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        type: "string"
+        description: "name of the user to delete"
+      responses:
+        204:
+          description: "the user was successfully deleted"
+        403:
+          description: "the application is not allowed to remove the user"
+        404:
+          description: "User could not be found"
+      
+  /user/attribute:
+    post:
+      summary: "Stores the user attributes. Attribute values will not be overwritten if not specified in attributes."
+      operationId: "setUsersAttributes"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        type: "string"
+        description: "name of the user"
+      - name: "attributes"
+        in: "body"
+        schema:
+          $ref: '#/definitions/CwdAttributes'
+      responses:
+        204:
+          description: "the attributes was successfully updated"
+        403:
+          description: "the application is not allowed to set attributes"
+        404:
+          description: "User could not be found"
+          
+  /user/group/nested:
+    get:
+      summary: "Retrieves the groups that the user is a nested member of"
+      operationId: "getNestedGroupsOfUser"
+      tags:
+        - crowd      
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        required: true
+        type: "string"
+        description: "The user you want to receive the groups of"
+      responses:
+        200:
+          description: "User exists"
+          schema:
+            $ref: '#/definitions/CwdGroupList'
+        404:
+          description: "User was not found"
+          
+  /group:
+    get:
+      summary: "Retrieves a group"
+      operationId: "getGroup"
+      tags:
+        - crowd      
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "groupname"
+        in: "query"
+        required: true
+        type: "string"
+        description: "Name of the group to retrieve."
+      - name: "expand"
+        in: "query"
+        type: "string"
+        default: "attributes"
+      responses:
+        200:
+          description: "Returned if the group was found"
+          schema:
+            $ref: '#/definitions/CwdGroup'
+        404:
+          description: "Returned if the group was not found"
+    post:
+      summary: "Adds a new group."
+      operationId: "createGroup"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "group"
+        in: "body"
+        description: "The group you want to create"
+        schema:
+          $ref: '#/definitions/CwdGroup'
+      responses:
+        201:
+          description: "Returned if the group is successfully created."
+        400:
+          description: "Returned if the group already exists"
+        403:
+          description: "Returned if the application is not allowed to create a new group."
+    put:
+      summary: "Updates an existing group"
+      operationId: "updateGroup"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "groupname"
+        in: "query"
+        required: true
+        type: "string"
+        description: "the name of the group to update."
+      - name: "group"
+        in: "body"
+        schema:
+          $ref: '#/definitions/CwdGroup'
+      responses:
+        200:
+          description: "Returned if the group previously existed and is now updated."
+          schema:
+            $ref: '#/definitions/CwdGroup'
+        400:
+          description: "Returned if the groupname in the request body and the URI do not match."
+        403:
+          description: "Returned if the application is not allowed to update/create a group."
+        404:
+          description: "Returned if the group does not exist."
+    delete:
+      summary: "Deletes a group"
+      operationId: "deleteGroup"
+      tags:
+        - crowd      
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "groupname"
+        in: "query"
+        required: true
+        type: "string"
+        description: "Name of the group to delete."
+      responses:
+        204:
+          description: "Returned if the group was found and deleted"
+        404:
+          description: "Returned if the group could not be found"
+  
+  /group/user/direct:
+    post:
+      summary: "Adds user as direct member of group"
+      operationId: "addUserToGroup"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user"
+        in: "body"
+        description: "A User object of the user you want to add. Only 'name' must be set."
+        schema:
+          $ref: '#/definitions/CwdUser'
+      - name: "groupname"
+        in: "query"
+        description: "The groupname of the group you want to add the user to"
+        required: true
+        type: "string"
+      responses:
+        201:
+          description: "User was successfully added to group"
+        400:
+          description: "User could not be found"
+        404:
+          description: "Group could not be found"
+        409:
+          description: "User is already member of the group"
+  
+  /group/user/nested:
+    get:
+      summary: "Retrieves the users that are nested members of the specified group"
+      operationId: "getNestedUsersOfGroup"
+      tags:
+        - crowd      
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "groupname"
+        in: "query"
+        required: true
+        type: "string"
+        description: "The group you want to receive the nested members of"
+      responses:
+        200:
+          description: "Group exists"
+          schema:
+            $ref: '#/definitions/CwdUserList'
+        404:
+          description: "Group was not found"
+          
+  /search:
+    get:
+      summary: "searches for a specific entity-type"
+      operationId: "search"
+      tags:
+        - crowd      
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "entity-type"
+        in: "query"
+        required: true
+        type: "string"
+        description: "The entity-type you want to search for"
+      responses:
+        200:
+          description: "Search was sent"
+          schema:
+            $ref: '#/definitions/CwdSearchResponse'
+          
+securityDefinitions:
+    crowdAuth:
+      type: basic
+      
+definitions:
+  CwdPassword:
+    type: "object"
+    properties:
+      value:
+        type: "string"
+      link:
+        $ref: '#/definitions/CwdLink'
+  CwdLink:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+      rel:
+        type: "string"
+  CwdAttributes:
+    type: "object"
+    properties:
+      attributes:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            link:
+              $ref: '#/definitions/CwdLink'
+            name:
+              type: "string"
+            values:
+              type: "array"
+              items:
+                type: "string"
+  CwdUser:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      first-name:
+        type: "string"
+      last-name:
+        type: "string"
+      display-name:
+        type: "string"
+      email:
+        type: "string"
+      active:
+        type: "boolean"
+        default: true
+      key:
+        type: "string"
+      password:
+        $ref: '#/definitions/CwdPassword'
+      attributes:
+        $ref: '#/definitions/CwdAttributes'
+      link:
+        $ref: '#/definitions/CwdLink'
+  CwdUserList:
+    type: "object"
+    properties:
+      users:
+        type: array
+        items:
+          $ref: '#/definitions/CwdUser'
+  CwdGroup:
+    type: "object"
+    properties:
+      link:
+        $ref: '#/definitions/CwdLink'
+      name:
+        type: "string"
+      description:
+        type: "string"
+      active:
+        type: "boolean"
+        default: true
+      type:
+        type: "string"
+        default: "GROUP"
+      attributes:
+        $ref: '#/definitions/CwdAttributes'
+  CwdGroupList:
+    type: "object"
+    properties:
+      groups:
+        type: array
+        items:
+          $ref: '#/definitions/CwdGroup'
+  CwdSearchResponse:
+    type: "object"
+    properties:
+      expand:
+        type: string
+      groups:
+        type: array
+        items:
+          $ref: '#/definitions/CwdGroup'
+      users:
+        type: array
+        items:
+          $ref: '#/definitions/CwdUser'
