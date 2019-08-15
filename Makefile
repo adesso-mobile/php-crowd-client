@@ -3,5 +3,7 @@ build: ./swagger-crowd-client.yaml
 		-i ./swagger-crowd-client.yaml \
 		-g php \
 		-o ./ \
-		--additional-properties invokerPackage=CrowdClient
-	sed -i 's#GIT_USER_ID/GIT_REPO_ID#adesso-mobile/php-crowd-client#' ./composer.json
+		--additional-properties invokerPackage=CrowdClient \
+		--additional-properties packageName=php-crowd-client \
+		--git-user-id=adesso-mobile \
+		--git-repo-id=php-crowd-client

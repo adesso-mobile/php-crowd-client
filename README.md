@@ -1,4 +1,4 @@
-# OpenAPIClient-php
+# php-crowd-client
 
 This is the crowd usermanagement rest resources endpoint documentation
 
@@ -22,11 +22,11 @@ To install the bindings via [Composer](http://getcomposer.org/), add the followi
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
+      "url": "https://github.com/adesso-mobile/php-crowd-client.git"
     }
   ],
   "require": {
-    "GIT_USER_ID/GIT_REPO_ID": "*@dev"
+    "adesso-mobile/php-crowd-client": "*@dev"
   }
 }
 ```
@@ -38,7 +38,7 @@ Then run `composer install`
 Download the files and include `autoload.php`:
 
 ```php
-    require_once('/path/to/OpenAPIClient-php/vendor/autoload.php');
+    require_once('/path/to/php-crowd-client/vendor/autoload.php');
 ```
 
 ## Tests
