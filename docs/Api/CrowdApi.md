@@ -638,7 +638,7 @@ Name | Type | Description  | Notes
 
 ## search
 
-> \CrowdClient\Model\CwdSearchResponse search($entity_type)
+> \CrowdClient\Model\CwdSearchResponse search($entity_type, $restriction)
 
 searches for a specific entity-type
 
@@ -662,9 +662,10 @@ $apiInstance = new CrowdClient\Api\CrowdApi(
     $config
 );
 $entity_type = 'entity_type_example'; // string | The entity-type you want to search for
+$restriction = 'restriction_example'; // string | restriction entities must satisfy in the Crowd Query Language
 
 try {
-    $result = $apiInstance->search($entity_type);
+    $result = $apiInstance->search($entity_type, $restriction);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CrowdApi->search: ', $e->getMessage(), PHP_EOL;
@@ -678,6 +679,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **entity_type** | **string**| The entity-type you want to search for |
+ **restriction** | **string**| restriction entities must satisfy in the Crowd Query Language | [optional]
 
 ### Return type
 

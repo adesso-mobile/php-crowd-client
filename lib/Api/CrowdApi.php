@@ -2618,14 +2618,15 @@ class CrowdApi
      * searches for a specific entity-type
      *
      * @param  string $entity_type The entity-type you want to search for (required)
+     * @param  string $restriction restriction entities must satisfy in the Crowd Query Language (optional)
      *
      * @throws \CrowdClient\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return \CrowdClient\Model\CwdSearchResponse
      */
-    public function search($entity_type)
+    public function search($entity_type, $restriction = null)
     {
-        list($response) = $this->searchWithHttpInfo($entity_type);
+        list($response) = $this->searchWithHttpInfo($entity_type, $restriction);
         return $response;
     }
 
@@ -2635,14 +2636,15 @@ class CrowdApi
      * searches for a specific entity-type
      *
      * @param  string $entity_type The entity-type you want to search for (required)
+     * @param  string $restriction restriction entities must satisfy in the Crowd Query Language (optional)
      *
      * @throws \CrowdClient\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of \CrowdClient\Model\CwdSearchResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function searchWithHttpInfo($entity_type)
+    public function searchWithHttpInfo($entity_type, $restriction = null)
     {
-        $request = $this->searchRequest($entity_type);
+        $request = $this->searchRequest($entity_type, $restriction);
 
         try {
             $options = $this->createHttpClientOption();
@@ -2723,13 +2725,14 @@ class CrowdApi
      * searches for a specific entity-type
      *
      * @param  string $entity_type The entity-type you want to search for (required)
+     * @param  string $restriction restriction entities must satisfy in the Crowd Query Language (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function searchAsync($entity_type)
+    public function searchAsync($entity_type, $restriction = null)
     {
-        return $this->searchAsyncWithHttpInfo($entity_type)
+        return $this->searchAsyncWithHttpInfo($entity_type, $restriction)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -2743,14 +2746,15 @@ class CrowdApi
      * searches for a specific entity-type
      *
      * @param  string $entity_type The entity-type you want to search for (required)
+     * @param  string $restriction restriction entities must satisfy in the Crowd Query Language (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function searchAsyncWithHttpInfo($entity_type)
+    public function searchAsyncWithHttpInfo($entity_type, $restriction = null)
     {
         $returnType = '\CrowdClient\Model\CwdSearchResponse';
-        $request = $this->searchRequest($entity_type);
+        $request = $this->searchRequest($entity_type, $restriction);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -2790,11 +2794,12 @@ class CrowdApi
      * Create request for operation 'search'
      *
      * @param  string $entity_type The entity-type you want to search for (required)
+     * @param  string $restriction restriction entities must satisfy in the Crowd Query Language (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function searchRequest($entity_type)
+    protected function searchRequest($entity_type, $restriction = null)
     {
         // verify the required parameter 'entity_type' is set
         if ($entity_type === null || (is_array($entity_type) && count($entity_type) === 0)) {
@@ -2813,6 +2818,10 @@ class CrowdApi
         // query params
         if ($entity_type !== null) {
             $queryParams['entity-type'] = ObjectSerializer::toQueryValue($entity_type);
+        }
+        // query params
+        if ($restriction !== null) {
+            $queryParams['restriction'] = ObjectSerializer::toQueryValue($restriction);
         }
 
 

@@ -7,8 +7,8 @@ basePath: "/crowd/rest/usermanagement/1"
 tags:
   - name: crowd
     
-schemes:
-- "https"
+schemes: 
+  - "https"
 paths:
   /authentication:
     post:
@@ -391,6 +391,11 @@ paths:
         required: true
         type: "string"
         description: "The entity-type you want to search for"
+      - name: "restriction"
+        in: "query"
+        required: false
+        type: "string"
+        description: "restriction entities must satisfy in the Crowd Query Language"
       responses:
         200:
           description: "Search was sent"
