@@ -116,7 +116,7 @@ class CrowdApi
     }
 
     /**
-     * Operation addUserToGroup
+     * Operation addUserAsDirectGroupMember
      *
      * Adds user as direct member of group
      *
@@ -127,13 +127,13 @@ class CrowdApi
      * @throws \InvalidArgumentException
      * @return void
      */
-    public function addUserToGroup($groupname, $user = null)
+    public function addUserAsDirectGroupMember($groupname, $user = null)
     {
-        $this->addUserToGroupWithHttpInfo($groupname, $user);
+        $this->addUserAsDirectGroupMemberWithHttpInfo($groupname, $user);
     }
 
     /**
-     * Operation addUserToGroupWithHttpInfo
+     * Operation addUserAsDirectGroupMemberWithHttpInfo
      *
      * Adds user as direct member of group
      *
@@ -144,9 +144,9 @@ class CrowdApi
      * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function addUserToGroupWithHttpInfo($groupname, $user = null)
+    public function addUserAsDirectGroupMemberWithHttpInfo($groupname, $user = null)
     {
-        $request = $this->addUserToGroupRequest($groupname, $user);
+        $request = $this->addUserAsDirectGroupMemberRequest($groupname, $user);
 
         try {
             $options = $this->createHttpClientOption();
@@ -186,7 +186,7 @@ class CrowdApi
     }
 
     /**
-     * Operation addUserToGroupAsync
+     * Operation addUserAsDirectGroupMemberAsync
      *
      * Adds user as direct member of group
      *
@@ -196,9 +196,9 @@ class CrowdApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function addUserToGroupAsync($groupname, $user = null)
+    public function addUserAsDirectGroupMemberAsync($groupname, $user = null)
     {
-        return $this->addUserToGroupAsyncWithHttpInfo($groupname, $user)
+        return $this->addUserAsDirectGroupMemberAsyncWithHttpInfo($groupname, $user)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -207,7 +207,7 @@ class CrowdApi
     }
 
     /**
-     * Operation addUserToGroupAsyncWithHttpInfo
+     * Operation addUserAsDirectGroupMemberAsyncWithHttpInfo
      *
      * Adds user as direct member of group
      *
@@ -217,10 +217,10 @@ class CrowdApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function addUserToGroupAsyncWithHttpInfo($groupname, $user = null)
+    public function addUserAsDirectGroupMemberAsyncWithHttpInfo($groupname, $user = null)
     {
         $returnType = '';
-        $request = $this->addUserToGroupRequest($groupname, $user);
+        $request = $this->addUserAsDirectGroupMemberRequest($groupname, $user);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -246,7 +246,7 @@ class CrowdApi
     }
 
     /**
-     * Create request for operation 'addUserToGroup'
+     * Create request for operation 'addUserAsDirectGroupMember'
      *
      * @param  string $groupname The groupname of the group you want to add the user to (required)
      * @param  \CrowdClient\Model\CwdUser $user A User object of the user you want to add. Only &#39;name&#39; must be set. (optional)
@@ -254,12 +254,12 @@ class CrowdApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function addUserToGroupRequest($groupname, $user = null)
+    protected function addUserAsDirectGroupMemberRequest($groupname, $user = null)
     {
         // verify the required parameter 'groupname' is set
         if ($groupname === null || (is_array($groupname) && count($groupname) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $groupname when calling addUserToGroup'
+                'Missing the required parameter $groupname when calling addUserAsDirectGroupMember'
             );
         }
 
@@ -2606,6 +2606,245 @@ class CrowdApi
         $query = \GuzzleHttp\Psr7\build_query($queryParams);
         return new Request(
             'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation removeDirectGroupMembership
+     *
+     * Removes the user membership.
+     *
+     * @param  string $groupname Name of the group from which the user membership will be removed. (required)
+     * @param  string $username Name the user to have their membershit removed. (required)
+     *
+     * @throws \CrowdClient\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return void
+     */
+    public function removeDirectGroupMembership($groupname, $username)
+    {
+        $this->removeDirectGroupMembershipWithHttpInfo($groupname, $username);
+    }
+
+    /**
+     * Operation removeDirectGroupMembershipWithHttpInfo
+     *
+     * Removes the user membership.
+     *
+     * @param  string $groupname Name of the group from which the user membership will be removed. (required)
+     * @param  string $username Name the user to have their membershit removed. (required)
+     *
+     * @throws \CrowdClient\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function removeDirectGroupMembershipWithHttpInfo($groupname, $username)
+    {
+        $request = $this->removeDirectGroupMembershipRequest($groupname, $username);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            return [null, $statusCode, $response->getHeaders()];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation removeDirectGroupMembershipAsync
+     *
+     * Removes the user membership.
+     *
+     * @param  string $groupname Name of the group from which the user membership will be removed. (required)
+     * @param  string $username Name the user to have their membershit removed. (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function removeDirectGroupMembershipAsync($groupname, $username)
+    {
+        return $this->removeDirectGroupMembershipAsyncWithHttpInfo($groupname, $username)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation removeDirectGroupMembershipAsyncWithHttpInfo
+     *
+     * Removes the user membership.
+     *
+     * @param  string $groupname Name of the group from which the user membership will be removed. (required)
+     * @param  string $username Name the user to have their membershit removed. (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function removeDirectGroupMembershipAsyncWithHttpInfo($groupname, $username)
+    {
+        $returnType = '';
+        $request = $this->removeDirectGroupMembershipRequest($groupname, $username);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'removeDirectGroupMembership'
+     *
+     * @param  string $groupname Name of the group from which the user membership will be removed. (required)
+     * @param  string $username Name the user to have their membershit removed. (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function removeDirectGroupMembershipRequest($groupname, $username)
+    {
+        // verify the required parameter 'groupname' is set
+        if ($groupname === null || (is_array($groupname) && count($groupname) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $groupname when calling removeDirectGroupMembership'
+            );
+        }
+        // verify the required parameter 'username' is set
+        if ($username === null || (is_array($username) && count($username) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $username when calling removeDirectGroupMembership'
+            );
+        }
+
+        $resourcePath = '/group/user/direct';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        if ($groupname !== null) {
+            $queryParams['groupname'] = ObjectSerializer::toQueryValue($groupname);
+        }
+        // query params
+        if ($username !== null) {
+            $queryParams['username'] = ObjectSerializer::toQueryValue($username);
+        }
+
+
+        // body params
+        $_tempBody = null;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                []
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                [],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            if ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
+            } else {
+                $httpBody = $_tempBody;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires HTTP basic authentication
+        if (!empty($this->config->getUsername()) || !(empty($this->config->getPassword()))) {
+            $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ":" . $this->config->getPassword());
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        return new Request(
+            'DELETE',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

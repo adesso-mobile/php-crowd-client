@@ -76,9 +76,9 @@ $groupname = 'groupname_example'; // string | The groupname of the group you wan
 $user = new \CrowdClient\Model\CwdUser(); // \CrowdClient\Model\CwdUser | A User object of the user you want to add. Only 'name' must be set.
 
 try {
-    $apiInstance->addUserToGroup($groupname, $user);
+    $apiInstance->addUserAsDirectGroupMember($groupname, $user);
 } catch (Exception $e) {
-    echo 'Exception when calling CrowdApi->addUserToGroup: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling CrowdApi->addUserAsDirectGroupMember: ', $e->getMessage(), PHP_EOL;
 }
 
 ?>
@@ -90,7 +90,7 @@ All URIs are relative to *http://localhost/crowd/rest/usermanagement/1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*CrowdApi* | [**addUserToGroup**](docs/Api/CrowdApi.md#addusertogroup) | **POST** /group/user/direct | Adds user as direct member of group
+*CrowdApi* | [**addUserAsDirectGroupMember**](docs/Api/CrowdApi.md#adduserasdirectgroupmember) | **POST** /group/user/direct | Adds user as direct member of group
 *CrowdApi* | [**authentication**](docs/Api/CrowdApi.md#authentication) | **POST** /authentication | Authenticates a user. Does not generate an SSO token. For SSO please take a look at the SSO token resource.
 *CrowdApi* | [**createGroup**](docs/Api/CrowdApi.md#creategroup) | **POST** /group | Adds a new group.
 *CrowdApi* | [**createUser**](docs/Api/CrowdApi.md#createuser) | **POST** /user | Creates a new user
@@ -100,6 +100,7 @@ Class | Method | HTTP request | Description
 *CrowdApi* | [**getNestedGroupsOfUser**](docs/Api/CrowdApi.md#getnestedgroupsofuser) | **GET** /user/group/nested | Retrieves the groups that the user is a nested member of
 *CrowdApi* | [**getNestedUsersOfGroup**](docs/Api/CrowdApi.md#getnestedusersofgroup) | **GET** /group/user/nested | Retrieves the users that are nested members of the specified group
 *CrowdApi* | [**getUser**](docs/Api/CrowdApi.md#getuser) | **GET** /user | Retrieves the user details. Either username or key query parameter must be present.
+*CrowdApi* | [**removeDirectGroupMembership**](docs/Api/CrowdApi.md#removedirectgroupmembership) | **DELETE** /group/user/direct | Removes the user membership.
 *CrowdApi* | [**search**](docs/Api/CrowdApi.md#search) | **GET** /search | searches for a specific entity-type
 *CrowdApi* | [**setUsersAttributes**](docs/Api/CrowdApi.md#setusersattributes) | **POST** /user/attribute | Stores the user attributes. Attribute values will not be overwritten if not specified in attributes.
 *CrowdApi* | [**updateGroup**](docs/Api/CrowdApi.md#updategroup) | **PUT** /group | Updates an existing group

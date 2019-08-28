@@ -4,7 +4,7 @@ All URIs are relative to *http://localhost/crowd/rest/usermanagement/1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**addUserToGroup**](CrowdApi.md#addUserToGroup) | **POST** /group/user/direct | Adds user as direct member of group
+[**addUserAsDirectGroupMember**](CrowdApi.md#addUserAsDirectGroupMember) | **POST** /group/user/direct | Adds user as direct member of group
 [**authentication**](CrowdApi.md#authentication) | **POST** /authentication | Authenticates a user. Does not generate an SSO token. For SSO please take a look at the SSO token resource.
 [**createGroup**](CrowdApi.md#createGroup) | **POST** /group | Adds a new group.
 [**createUser**](CrowdApi.md#createUser) | **POST** /user | Creates a new user
@@ -14,6 +14,7 @@ Method | HTTP request | Description
 [**getNestedGroupsOfUser**](CrowdApi.md#getNestedGroupsOfUser) | **GET** /user/group/nested | Retrieves the groups that the user is a nested member of
 [**getNestedUsersOfGroup**](CrowdApi.md#getNestedUsersOfGroup) | **GET** /group/user/nested | Retrieves the users that are nested members of the specified group
 [**getUser**](CrowdApi.md#getUser) | **GET** /user | Retrieves the user details. Either username or key query parameter must be present.
+[**removeDirectGroupMembership**](CrowdApi.md#removeDirectGroupMembership) | **DELETE** /group/user/direct | Removes the user membership.
 [**search**](CrowdApi.md#search) | **GET** /search | searches for a specific entity-type
 [**setUsersAttributes**](CrowdApi.md#setUsersAttributes) | **POST** /user/attribute | Stores the user attributes. Attribute values will not be overwritten if not specified in attributes.
 [**updateGroup**](CrowdApi.md#updateGroup) | **PUT** /group | Updates an existing group
@@ -21,9 +22,9 @@ Method | HTTP request | Description
 
 
 
-## addUserToGroup
+## addUserAsDirectGroupMember
 
-> addUserToGroup($groupname, $user)
+> addUserAsDirectGroupMember($groupname, $user)
 
 Adds user as direct member of group
 
@@ -50,9 +51,9 @@ $groupname = 'groupname_example'; // string | The groupname of the group you wan
 $user = new \CrowdClient\Model\CwdUser(); // \CrowdClient\Model\CwdUser | A User object of the user you want to add. Only 'name' must be set.
 
 try {
-    $apiInstance->addUserToGroup($groupname, $user);
+    $apiInstance->addUserAsDirectGroupMember($groupname, $user);
 } catch (Exception $e) {
-    echo 'Exception when calling CrowdApi->addUserToGroup: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling CrowdApi->addUserAsDirectGroupMember: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -630,6 +631,68 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../../README.md#documentation-for-models)
+[[Back to README]](../../README.md)
+
+
+## removeDirectGroupMembership
+
+> removeDirectGroupMembership($groupname, $username)
+
+Removes the user membership.
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure HTTP basic authorization: crowdAuth
+$config = CrowdClient\Configuration::getDefaultConfiguration()
+              ->setUsername('YOUR_USERNAME')
+              ->setPassword('YOUR_PASSWORD');
+
+
+$apiInstance = new CrowdClient\Api\CrowdApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$groupname = 'groupname_example'; // string | Name of the group from which the user membership will be removed.
+$username = 'username_example'; // string | Name the user to have their membershit removed.
+
+try {
+    $apiInstance->removeDirectGroupMembership($groupname, $username);
+} catch (Exception $e) {
+    echo 'Exception when calling CrowdApi->removeDirectGroupMembership: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **groupname** | **string**| Name of the group from which the user membership will be removed. |
+ **username** | **string**| Name the user to have their membershit removed. |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[crowdAuth](../../README.md#crowdAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../../README.md#documentation-for-models)
