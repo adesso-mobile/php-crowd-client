@@ -101,6 +101,7 @@ Class | Method | HTTP request | Description
 *CrowdApi* | [**getNestedUsersOfGroup**](docs/Api/CrowdApi.md#getnestedusersofgroup) | **GET** /group/user/nested | Retrieves the users that are nested members of the specified group
 *CrowdApi* | [**getUser**](docs/Api/CrowdApi.md#getuser) | **GET** /user | Retrieves the user details. Either username or key query parameter must be present.
 *CrowdApi* | [**removeDirectGroupMembership**](docs/Api/CrowdApi.md#removedirectgroupmembership) | **DELETE** /group/user/direct | Removes the user membership.
+*CrowdApi* | [**renameUser**](docs/Api/CrowdApi.md#renameuser) | **POST** /user/rename | Renames a user
 *CrowdApi* | [**search**](docs/Api/CrowdApi.md#search) | **GET** /search | searches for a specific entity-type
 *CrowdApi* | [**setUsersAttributes**](docs/Api/CrowdApi.md#setusersattributes) | **POST** /user/attribute | Stores the user attributes. Attribute values will not be overwritten if not specified in attributes.
 *CrowdApi* | [**updateGroup**](docs/Api/CrowdApi.md#updategroup) | **PUT** /group | Updates an existing group
@@ -118,6 +119,7 @@ Class | Method | HTTP request | Description
  - [CwdSearchResponse](docs/Model/CwdSearchResponse.md)
  - [CwdUser](docs/Model/CwdUser.md)
  - [CwdUserList](docs/Model/CwdUserList.md)
+ - [CwdUserRename](docs/Model/CwdUserRename.md)
 
 
 ## Documentation For Authorization

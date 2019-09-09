@@ -150,6 +150,37 @@ paths:
           description: "the application is not allowed to remove the user"
         404:
           description: "User could not be found"
+
+  /user/rename:
+    post:
+      summary: "Renames a user"
+      operationId: "renameUser"
+      tags:
+        - crowd
+      security:
+        - crowdAuth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        type: "string"
+        description: "name of the user to rename"
+      - name: "newname"
+        in: "body"
+        schema:
+          $ref: '#/definitions/CwdUserRename'
+      responses:
+        200:
+          description: "The user was successfully renamed"
+          schema:
+            $ref: '#/definitions/CwdUser'
+        400:
+          description: "The new user name is invalid or already taken"
+        403:
+          description: "The application is not allowed to rename the user"
       
   /user/attribute:
     post:
@@ -434,6 +465,11 @@ securityDefinitions:
       type: basic
       
 definitions:
+  CwdUserRename:
+    type: "object"
+    properties:
+      new-name:
+        type: "string"
   CwdPassword:
     type: "object"
     properties:
